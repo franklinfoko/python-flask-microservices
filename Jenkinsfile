@@ -1,5 +1,5 @@
 pipeline {
-    agent none
+    agent any
 
     parameters {
         string(name: 'IMAGE_NAME', defaultValue: 'frontend', description: 'This is the name of my docker image for frontend application')
