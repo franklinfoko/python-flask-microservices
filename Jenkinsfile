@@ -65,7 +65,8 @@ pipeline {
                     command1="docker pull $DOCKER_HUB_USER/$IMAGE_NAME:$IMAGE_TAG"
                     command2="docker rm -f $CONTAINER_NAME || echo 'app not found'"
                     command3="docker run -d -p 5000:5000 --name $CONTAINER_NAME $DOCKER_HUB_USER/$IMAGE_NAME:$IMAGE_TAG"
-                    [ -d /home/vagrant/.ssh ] || mkdir /home/vagrant/.ssh && chmod 0700 /home/vagrant/.ssh
+                    [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                    ssh-keyscan -t rsa,dsa 192.168.99.11 >> ~/.ssh/known_hosts
                     
                     ssh vagrant@192.168.99.11 \
                         -o SendEnv=DOCKER_HUB_USER \
