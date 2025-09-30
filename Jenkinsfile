@@ -51,5 +51,31 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy') {
+            environment {
+                DOCKER_HUB_USER = "franklinfoko"
+                IMAGE_NAME = "frontend"
+                IMAGE_TAG = "latest"
+                CONTAINER_NAME = "frontend-container"
+            }
+            steps {
+                sshagent(credentials: ['ssh-cred']) {
+                sh '''
+                    command1="docker pull $DOCKER_HUB_USER/$IMAGE_NAME:$IMAGE_TAG"
+                    command2="docker rm -f $CONTAINER_NAME || echo 'app not found'"
+                    command3="docker run -d -p 5000:5000 --name $CONTAINER_NAME $DOCKER_HUB_USER/$IMAGE_NAME:$IMAGE_TAG"
+                    [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                    
+                    ssh vagrant@192.168.99.11 \
+                        -o SendEnv=DOCKER_HUB_USER \
+                        -o SendEnv=IMAGE_NAME \
+                        -o SendEnv=IMAGE_TAG \
+                        -o SendEnv=CONTAINER_NAME \
+                        -C "$command1 && $command2 && command3"
+                '''
+                }
+            }
+        }
     }
 }
