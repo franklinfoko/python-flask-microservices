@@ -13,7 +13,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    sh 'ls -a && docker build -t ${IMAGE_NAME}:${IMAGE_TAG} frontend/Dockerfile'
+                    sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} frontend/'
                 }
             }
         }
