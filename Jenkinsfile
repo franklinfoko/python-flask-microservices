@@ -1,3 +1,5 @@
+@Library('test-shared-library') _
+
 pipeline {
     agent any
 
@@ -13,7 +15,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 script {
-                    sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} frontend/'
+                    dockerBuild("$IMAGE_NAME", "$IMAGE_TAG")
                 }
             }
         }
